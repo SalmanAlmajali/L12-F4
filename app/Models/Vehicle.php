@@ -82,5 +82,10 @@ class Vehicle extends Model
     {
         return $this->hasMany(VehicleCost::class);
     }
-   
+
+   public function latestGps()
+{
+    // Kita kasih tahu Laravel: "Cari di gps_logs, hubungkan license_plate di sana dengan license_plate di sini"
+    return $this->hasOne(GpsLog::class, 'license_plate', 'license_plate')->latestOfMany();
+}
 }
