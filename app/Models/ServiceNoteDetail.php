@@ -4,19 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MaintenanceDetail extends Model
+class ServiceNoteDetail extends Model
 {
     protected $fillable = [
-        'maintenance_id',
+        'service_note_id',
         'spare_part_id',
-        'price',
-        'quantity',
-        'total',
     ];
 
-    public function maintenance()
+    public function serviceNote()
     {
-        return $this->belongsTo(Maintenance::class);
+        return $this->belongsTo(ServiceNote::class);
     }
 
     public function sparePart()

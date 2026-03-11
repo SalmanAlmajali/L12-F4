@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('maintenances', function (Blueprint $table) {
+       Schema::create('services', function (Blueprint $table) {
     $table->id();
 
     $table->foreignId('vehicle_id')
@@ -19,12 +19,15 @@ return new class extends Migration
         ->cascadeOnDelete();
 
     $table->date('service_date');
-    $table->integer('mileage')->nullable();
-    $table->decimal('cost', 15, 2);
+    $table->string('register_number')->nullable();
+    $table->integer('km_service')->default(0);
+    $table->date('next_service_date')->nullable();
+    $table->text('memo')->nullable();
+
+    $table->decimal('total_cost', 15, 2)->default(0);
 
     $table->timestamps();
 });
-
     }
 
     /**
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('maintenances');
+        Schema::dropIfExists('services');
     }
 };

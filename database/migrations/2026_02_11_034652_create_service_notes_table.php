@@ -11,20 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('maintenances', function (Blueprint $table) {
-    $table->id();
+        Schema::create('service_notes', function (Blueprint $table) {
+            $table->id();
 
     $table->foreignId('vehicle_id')
         ->constrained()
         ->cascadeOnDelete();
 
-    $table->date('service_date');
-    $table->integer('mileage')->nullable();
-    $table->decimal('cost', 15, 2);
+    $table->date('date');
+    $table->string('number')->nullable();
+    $table->string('cc')->nullable();
+    $table->text('introduction')->nullable();
+    $table->string('position')->nullable();
+    $table->string('name')->nullable();
+    $table->string('nip')->nullable();
+    $table->boolean('approved')->default(false);
 
     $table->timestamps();
 });
-
     }
 
     /**
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('maintenances');
+        Schema::dropIfExists('service_notes');
     }
 };

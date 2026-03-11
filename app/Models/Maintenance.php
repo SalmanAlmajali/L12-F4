@@ -9,8 +9,9 @@ class Maintenance extends Model
     protected $fillable = [
         'vehicle_id',
         'service_date',
-        'description',
+        'mileage',
         'total_cost',
+        'next_service_date',
     ];
 
     public function vehicle()

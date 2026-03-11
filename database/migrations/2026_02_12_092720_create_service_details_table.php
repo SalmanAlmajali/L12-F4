@@ -11,27 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('maintenances', function (Blueprint $table) {
+        Schema::create('service_details', function (Blueprint $table) {
     $table->id();
 
-    $table->foreignId('vehicle_id')
+    $table->foreignId('service_id')
         ->constrained()
         ->cascadeOnDelete();
 
-    $table->date('service_date');
-    $table->integer('mileage')->nullable();
-    $table->decimal('cost', 15, 2);
+    $table->foreignId('spare_part_id')
+        ->constrained()
+        ->cascadeOnDelete();
+
+    $table->decimal('price', 15, 2);
+    $table->integer('qty');
+    $table->decimal('total', 15, 2);
 
     $table->timestamps();
 });
-
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('maintenances');
+        Schema::dropIfExists('service_details');
     }
 };
