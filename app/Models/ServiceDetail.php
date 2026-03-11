@@ -12,6 +12,7 @@ class ServiceDetail extends Model
         'price',
         'qty',
         'total',
+        'is_approved',
     ];
 
     public function service()

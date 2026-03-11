@@ -14,6 +14,7 @@ class Service extends Model
         'next_service_date',
         'memo',
         'total_cost',
+        'is_approved',
     ];
 
     public function vehicle()

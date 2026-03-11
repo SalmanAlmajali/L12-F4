@@ -21,10 +21,10 @@ class VehicleResource extends Resource
 {
     protected static ?string $model = Vehicle::class;
 
-    protected static ?string $navigationLabel = 'Kendaraan';
-    protected static ?string $pluralLabel = 'Kendaraan';
-    protected static ?string $label = 'Kendaraan';
-    protected static ?string $breadcrumb = 'Kendaraan';
+    protected static ?string $navigationLabel = 'Admin Kendaraan';
+    protected static ?string $pluralLabel = 'Admin Kendaraan';
+    protected static ?string $label = 'Admin Kendaraan';
+    protected static ?string $breadcrumb = ' Admin Kendaraan';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
         protected static string|\UnitEnum|null $navigationGroup = 'Kendaraan';
 

@@ -8,16 +8,8 @@ class SparePart extends Model
 {
     protected $fillable = ['name', 'price'];
 
-    public function maintenanceDetails()
+    public function serviceDetails()
     {
-        return $this->hasMany(MaintenanceDetail::class);
+        return $this->hasMany(ServiceDetail::class);
     }
-    public function serviceNotes()
-{
-    return $this->belongsToMany(
-        ServiceNote::class,
-        'service_note_details'
-    );
-}
-
 }
