@@ -16,4 +16,13 @@ class Chat extends Model
     protected $casts = [
         'sent_at' => 'datetime',
     ];
+    public function sender()
+{
+    return $this->belongsTo(User::class, 'sender_username', 'name');
+}
+
+public function receiver()
+{
+    return $this->belongsTo(User::class, 'receiver_username', 'name');
+}
 }
