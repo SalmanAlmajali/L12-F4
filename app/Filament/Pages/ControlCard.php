@@ -3,21 +3,20 @@
 namespace App\Filament\Pages;
 
 use App\Models\Vehicle;
-use App\Models\Service; // Tambahkan ini
-use Filament\Schemas\Schema;
-use Filament\Tables\Table;
+use App\Models\Service;
 use Filament\Pages\Page;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Table;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Forms\Components\Select;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\Action;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Actions\Action; // Pastikan baris ini ada di paling atas
 
-class ControlCard extends Page implements HasForms, HasTable
+class ControlCard extends Page implements HasSchemas, HasTable
 {
-    use InteractsWithForms;
+    use InteractsWithSchemas;
     use InteractsWithTable;
 
     protected static ?string $title = 'Kartu Kendali';
@@ -25,105 +24,90 @@ class ControlCard extends Page implements HasForms, HasTable
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
     protected string $view = 'filament.pages.control-card';
 
-    // Properti ini yang akan menangkap inputan user
-    public ?int $year = null;
-    public ?int $vehicle_id = null;
+    public ?array $data = [];
 
-    // Tambahkan di dalam class ControlCard
-public function submit(): void
+    public function submit(): void
 {
-    // Memaksa Livewire untuk merender ulang komponen tabel
-    $this->dispatch('refreshTable'); 
+    // Kosongkan saja, karena wire:model.live sudah otomatis mengupdate tabel
 }
 
-    // Tambahkan properti ini di bagian atas class
-public ?array $data = []; 
-
-public function mount(): void
-{
-    // Inisialisasi form dengan array data
-    $this->form->fill();
-}
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
 
 public function form(Schema $schema): Schema
 {
     return $schema
-        ->statePath('data') // Menghubungkan input ke array $this->data
-        ->components([
-            Select::make('vehicle_id')
-                ->label('No Polisi')
-                ->options(Vehicle::pluck('license_plate', 'id'))
-                ->searchable()
-                ->required(),
-
-            Select::make('year')
-                ->label('Tahun')
-                ->options(collect(range(date('Y'), 2020))->mapWithKeys(fn ($y) => [$y => $y])->toArray())
-                ->required(),
+        ->statePath('data')
+        ->schema([
+            \Filament\Schemas\Components\Fieldset::make('Filter')
+                ->schema([
+                    \Filament\Schemas\Components\Grid::make(2)
+                        ->schema([
+                            \Filament\Schemas\Components\Html::make('
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold flex">No Polisi <span class="text-danger-600">*</span></label>
+                                    <select wire:model.live="data.vehicle_id" class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
+                                        <option value="">Pilih Kendaraan</option>
+                                        ' . collect(\App\Models\Vehicle::all())->map(fn($v) => "<option value='{$v->id}'>{$v->license_plate}</option>")->implode('') . '
+                                    </select>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold flex">Tahun <span class="text-danger-600">*</span></label>
+                                    <select wire:model.live="data.year" class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
+                                        <option value="">Pilih Tahun</option>
+                                        ' . collect(range(date('Y'), 2020))->map(fn($y) => "<option value='{$y}'>{$y}</option>")->implode('') . '
+                                    </select>
+                                </div>
+                            '),
+                        ]),
+                   
+                ])
         ]);
 }
 
-public function table(Table $table): Table
+  public function table(Table $table): Table
 {
     return $table
         ->query(
             Service::query()
                 ->with(['details.sparePart'])
-                // Ambil nilai dari array data
-                ->when($this->data['vehicle_id'] ?? null, fn ($q, $v) => $q->where('vehicle_id', $v))
-                ->when($this->data['year'] ?? null, fn ($q, $y) => $q->whereYear('service_date', $y))
-                // Sembunyikan jika belum ada input (sesuai revisi pembimbing)
-                ->when(!($this->data['vehicle_id'] ?? null) || !($this->data['year'] ?? null), fn ($q) => $q->whereRaw('1 = 0'))
+                ->when(data_get($this->data, 'vehicle_id'), fn ($q, $v) => $q->where('vehicle_id', $v))
+                ->when(data_get($this->data, 'year'), fn ($q, $y) => $q->whereYear('service_date', $y))
+                ->when(!data_get($this->data, 'vehicle_id') || !data_get($this->data, 'year'), fn ($q) => $q->whereRaw('1 = 0'))
         )
         ->columns([
-            TextColumn::make('service_date')
-                ->label('Tgl Service')
-                ->date('d M Y'),
-
-            TextColumn::make('register_number')
-                ->label('No Register')
-                ->default('-'),
-
-            TextColumn::make('km_service')
-                ->label('KM Service')
-                ->numeric(thousandsSeparator: '.'),
-
-            TextColumn::make('details.sparePart.name') 
-                ->label('Spare Part')
-                ->listWithLineBreaks()
-                ->bulleted(),
-
-            TextColumn::make('details.price')
-                ->label('Price')
-                ->money('IDR', locale: 'id')
-                ->listWithLineBreaks(),
-
-            TextColumn::make('details.qty')
-                ->label('Qty')
-                ->listWithLineBreaks(),
-
-            TextColumn::make('details.total')
-                ->label('Total')
-                ->money('IDR', locale: 'id')
-                ->listWithLineBreaks()
+            TextColumn::make('service_date')->label('Tgl Service')->date('d M Y'),
+            TextColumn::make('register_number')->label('No Register'), // Tambahan kolom
+            TextColumn::make('km_service')->label('KM Service')->numeric(thousandsSeparator: '.'),
+            TextColumn::make('details.sparePart.name')->label('Spare Part')->listWithLineBreaks()->bulleted(),
+            TextColumn::make('details.price')->label('Price')->money('IDR', locale: 'id'), // Tambahan kolom
+            TextColumn::make('details.qty')->label('Qty'), // Tambahan kolom
+            TextColumn::make('details.total')->label('Total')->money('IDR', locale: 'id')
                 ->summarize(\Filament\Tables\Columns\Summarizers\Sum::make()->label('Grand Total')),
-        ]) // DI SINI: Tanda titik koma dihapus
-        ->headerActions([
-            Action::make('exportExcel')
-                ->label('Excel')
-                ->icon('heroicon-o-document-arrow-down')
-                ->color('success')
-                ->action(fn() => $this->dispatch('export-excel')),
+        ])
+       
+      ->headerActions([
+    Action::make('exportExcel') // Cukup tulis Action::make karena sudah ada 'use' di atas
+        ->label('Excel')
+        ->icon('heroicon-s-document-arrow-down')
+        ->color('success')
+        ->url(fn() => route('control-card.excel', [
+            'vehicle_id' => data_get($this->data, 'vehicle_id'),
+            'year' => data_get($this->data, 'year')
+        ]))
+        ->openUrlInNewTab(),
 
-            Action::make('printPdf')
-                ->label('Print')
-                ->icon('heroicon-o-printer')
-                ->color('gray')
-                ->url(fn () => route('control-card.pdf', [
-                    'vehicle_id' => $this->vehicle_id,
-                    'year' => $this->year,
-                ]))
-                ->openUrlInNewTab(),
-        ]); // Titik koma dipindah ke sini
+    Action::make('print')
+        ->label('Print')
+        ->icon('heroicon-s-printer')
+        ->color('gray')
+        ->url(fn() => route('control-card.print', [
+            'vehicle_id' => data_get($this->data, 'vehicle_id'),
+            'year' => data_get($this->data, 'year')
+        ]))
+        ->openUrlInNewTab(),
+        ]);
 }
 }

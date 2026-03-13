@@ -20,7 +20,7 @@ class ServiceNotesTable
     ->sortable()
     ->searchable(),
 
-TextColumn::make('date')
+TextColumn::make('service_date')
     ->label('Tanggal')
     ->date()
     ->sortable(),
@@ -32,11 +32,6 @@ TextColumn::make('number')
 TextColumn::make('name')
     ->label('Nama')
     ->searchable(),
-
-IconColumn::make('approved')
-    ->boolean()
-    ->label('Disetujui'),
-
             ])
             ->filters([
                 //

@@ -11,7 +11,6 @@ use Filament\Forms\Components\Textarea;
 use App\Models\Vehicle;
 use Filament\Schemas\Schema;
 
-
 class ServiceForm
 {
     public static function configure(Schema $schema): Schema
@@ -19,24 +18,24 @@ class ServiceForm
         return $schema
             ->components([
 
-               Select::make('vehicle_id')
-    ->label('Kendaraan')
-    ->options(
-        Vehicle::pluck('license_plate', 'id')
-    )
-    ->searchable()
-    ->preload()
-    ->required(),
+                Select::make('vehicle_id')
+                    ->label('Kendaraan')
+                    ->options(Vehicle::pluck('license_plate', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->required(),
 
                 DatePicker::make('service_date')
                     ->label('Tgl Service')
                     ->required(),
 
-                      TextInput::make('register_number')
+                TextInput::make('register_number')
                     ->label('No Register')
                     ->required(),
 
                 TextInput::make('km_service')
+                    ->label('KM Service')
+                    ->numeric()
                     ->required(),
 
                 DatePicker::make('next_service_date')
@@ -44,26 +43,34 @@ class ServiceForm
                     ->required(),
 
                 Textarea::make('memo')
+                    ->label('Memo')
                     ->columnSpanFull(),
 
                 Repeater::make('details')
                     ->relationship()
+                    ->label('Rincian Suku Cadang')
                     ->schema([
-
                         Select::make('spare_part_id')
                             ->label('Suku Cadang')
                             ->options(SparePart::all()->pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->required()
                             ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set) {
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                 $sparePart = SparePart::find($state);
-                                $set('price', $sparePart?->price ?? 0);
-                                $set('subtotal', $sparePart?->price ?? 0);
+                                $price = $sparePart?->price ?? 0;
+                                $qty = (float) ($get('qty') ?? 1);
+                                
+                                $set('price', $price);
+                                $set('total', $price * $qty);
                             })
-                            ->required(),
+                            ->columnSpan(2),
 
                         TextInput::make('price')
                             ->label('Harga')
                             ->numeric()
+                            ->prefix('Rp')
                             ->readonly()
                             ->required(),
 
@@ -71,28 +78,43 @@ class ServiceForm
                             ->label('Jumlah')
                             ->numeric()
                             ->default(1)
+                            ->required()
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                $price = $get('price') ?? 0;
-                                $set('subtotal', $price * $state);
-                            })
-                            ->required(),
+                                $price = (float) ($get('price') ?? 0);
+                                $set('total', $price * (float) $state);
+                            }),
 
-                        TextInput::make('subtotal')
+                        TextInput::make('total')
+                            ->label('Subtotal')
                             ->numeric()
+                            ->prefix('Rp')
                             ->readonly()
                             ->required(),
-
                     ])
-                    ->columns(4)
-                    ->columnSpanFull(),
+                    ->columns(5)
+                    ->columnSpanFull()
+                    ->reactive()
+                    // INI KUNCI PERBAIKANNYA: Paksa hitung ulang total_cost
+                    ->afterStateUpdated(function (callable $set, callable $get) {
+                        $details = $get('details') ?? [];
+                        $totalBiaya = 0;
+
+                        foreach ($details as $item) {
+                            $totalBiaya += (float) ($item['total'] ?? 0);
+                        }
+                        
+                        $set('total_cost', $totalBiaya);
+                    }),
 
                 TextInput::make('total_cost')
-                    ->label('Biaya')
+                    ->label('Total Biaya')
                     ->numeric()
+                    ->prefix('Rp')
                     ->readonly()
                     ->required()
-                    ->default(0),
+                    ->dehydrated() // Pastikan nilai terkirim ke database
+                    ->extraInputAttributes(['style' => 'font-weight: bold; color: #fbbf24;']),
             ]);
     }
 }
