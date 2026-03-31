@@ -16,7 +16,8 @@ class ListModules extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Tambah Modul'),
+                ->label('Tambah Modul')
+                ->modalWidth('md'),
         ];
     }
 }

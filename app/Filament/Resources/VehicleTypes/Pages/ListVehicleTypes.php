@@ -16,7 +16,8 @@ class ListVehicleTypes extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Tambah Jenis Kendaraan'),
+                ->label('Tambah Jenis Kendaraan')
+                ->modalWidth('md'),
         ];
     }
 }

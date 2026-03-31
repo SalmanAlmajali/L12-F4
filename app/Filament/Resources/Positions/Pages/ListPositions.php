@@ -16,7 +16,8 @@ class ListPositions extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Tambah Jabatan Pekerjaan'),
+                ->label('Tambah Jabatan Pekerjaan')
+                ->modalWidth('md'),
         ];
     }
 }

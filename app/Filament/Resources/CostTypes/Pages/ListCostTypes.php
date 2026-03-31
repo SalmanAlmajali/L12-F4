@@ -15,7 +15,9 @@ class ListCostTypes extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()->label('Tambah Jenis Biaya'),
+            CreateAction::make()
+                ->label('Tambah Jenis Biaya')
+                ->modalWidth('md'),
         ];
     }
 }

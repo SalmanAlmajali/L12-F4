@@ -16,7 +16,8 @@ class ListBrands extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Tambah Merk Kendaraan'),
+                ->label('Tambah Merk Kendaraan')
+                ->modalWidth('md'),
         ];
     }
 }
