@@ -18,10 +18,9 @@ class CostTypeResource extends Resource
 {
     protected static ?string $model = CostType::class;
 
-    protected static ?string $navigationLabel = 'jenis biaya';
-    protected static ?string $pluralLabel = 'jenis biaya';
-    protected static ?string $label = 'jenis biaya';
-    protected static ?string $breadcrumb = 'jenis biaya';
+    protected static ?string $label = 'Jenis biaya';
+    protected static ?string $pluralLabel = 'Jenis biaya';
+    protected static ?string $breadcrumb = 'Jenis biaya';
 
     protected static string|\UnitEnum|null $navigationGroup = 'Master Data';
 
@@ -50,8 +49,8 @@ class CostTypeResource extends Resource
     {
         return [
             'index' => ListCostTypes::route('/'),
-            'create' => CreateCostType::route('/create'),
-            'edit' => EditCostType::route('/{record}/edit'),
+            // 'create' => CreateCostType::route('/create'),
+            // 'edit' => EditCostType::route('/{record}/edit'),
         ];
     }
 }

@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CityResource extends Resource
 {
@@ -24,6 +25,8 @@ class CityResource extends Resource
     protected static ?string $breadcrumb = 'Kota / Kab';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
 
     protected static ?string $recordTitleAttribute = 'city_name';
 
@@ -41,8 +44,8 @@ class CityResource extends Resource
     {
         return [
             'index' => Listcitys::route('/'),
-            'create' => Createcity::route('/create'),
-            'edit' => Editcity::route('/{record}/edit'),
+            // 'create' => Createcity::route('/create'),
+            // 'edit' => Editcity::route('/{record}/edit'),
         ];
     }
 }

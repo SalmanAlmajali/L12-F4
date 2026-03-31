@@ -50,8 +50,8 @@ class DirectorateResource extends Resource
     {
         return [
             'index' => ListDirectorates::route('/'),
-            'create' => CreateDirectorate::route('/create'),
-            'edit' => EditDirectorate::route('/{record}/edit'),
+            // 'create' => CreateDirectorate::route('/create'),
+            // 'edit' => EditDirectorate::route('/{record}/edit'),
         ];
     }
 }

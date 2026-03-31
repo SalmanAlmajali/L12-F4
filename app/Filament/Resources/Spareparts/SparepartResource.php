@@ -52,8 +52,8 @@ protected static string|BackedEnum|null $navigationIcon =
     {
         return [
             'index' => ListSpareparts::route('/'),
-            'create' => CreateSparepart::route('/create'),
-            'edit' => EditSparepart::route('/{record}/edit'),
+            // 'create' => CreateSparepart::route('/create'),
+            // 'edit' => EditSparepart::route('/{record}/edit'),
         ];
     }
 }

@@ -50,8 +50,8 @@ class VehicleTypeResource extends Resource
     {
         return [
             'index' => ListVehicleTypes::route('/'),
-            'create' => CreateVehicleType::route('/create'),
-            'edit' => EditVehicleType::route('/{record}/edit'),
+            // 'create' => CreateVehicleType::route('/create'),
+            // 'edit' => EditVehicleType::route('/{record}/edit'),
         ];
     }
 }

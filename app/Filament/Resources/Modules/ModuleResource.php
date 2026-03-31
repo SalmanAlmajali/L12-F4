@@ -50,8 +50,8 @@ class ModuleResource extends Resource
     {
         return [
             'index' => ListModules::route('/'),
-            'create' => CreateModule::route('/create'),
-            'edit' => EditModule::route('/{record}/edit'),
+            // 'create' => CreateModule::route('/create'),
+            // 'edit' => EditModule::route('/{record}/edit'),
         ];
     }
 }
