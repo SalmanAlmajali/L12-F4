@@ -13,7 +13,8 @@ class CityForm
             ->components([
                 TextInput::make('city_name')
                     ->label('Kota / Kabupaten')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }

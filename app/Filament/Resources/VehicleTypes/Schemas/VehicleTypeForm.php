@@ -14,7 +14,8 @@ class VehicleTypeForm
                 TextInput::make('name')
                     ->label('Jenis Kendaraan')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
             ]);
     }
 }

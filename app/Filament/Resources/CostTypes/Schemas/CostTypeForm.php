@@ -13,7 +13,8 @@ class CostTypeForm
             ->components([
                 TextInput::make('name')
                     ->label('Biaya')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }

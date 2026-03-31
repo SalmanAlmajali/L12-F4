@@ -13,7 +13,8 @@ class PositionForm
             ->components([
                 TextInput::make('name')
                     ->label('Jabatan')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }

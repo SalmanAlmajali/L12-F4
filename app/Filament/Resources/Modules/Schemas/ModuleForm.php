@@ -13,7 +13,8 @@ class ModuleForm
             ->components([
                 TextInput::make('name')
                     ->label('Modul Nama')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }

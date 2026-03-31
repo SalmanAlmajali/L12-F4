@@ -13,7 +13,8 @@ class BrandForm
             ->components([
                 TextInput::make('name')
                     ->label('Merk Kendaraan')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }
