@@ -16,6 +16,10 @@ class VehicleTypesTable
         return $table
             ->emptyStateHeading('Belum ada data jenis kendaraan')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+
                 TextColumn::make('name')
                     ->label('Jenis Kendaraan')
                     ->searchable()
@@ -31,7 +35,8 @@ class VehicleTypesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

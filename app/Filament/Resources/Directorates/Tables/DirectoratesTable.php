@@ -15,6 +15,10 @@ class DirectoratesTable
         return $table
             ->emptyStateHeading('Belum ada data direktorat')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+                    
                 TextColumn::make('name')
                     ->label('Direktorat')
                     ->searchable(),

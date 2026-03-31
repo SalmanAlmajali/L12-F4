@@ -15,6 +15,10 @@ class ModulesTable
         return $table
             ->emptyStateHeading('Belum ada data modul')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+
                 TextColumn::make('name')
                     ->label('Modul Nama')
                     ->searchable(),
@@ -31,7 +35,8 @@ class ModulesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

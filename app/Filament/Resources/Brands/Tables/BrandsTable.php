@@ -16,6 +16,9 @@ class BrandsTable
             ->emptyStateHeading('Belum ada data merk kendaraan')
             ->emptyStateDescription('Silakan tambahkan merk kendaraan terlebih dahulu')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
                 TextColumn::make('name')
                     ->label('Merk Kendaraan')
                     ->searchable(),
@@ -32,7 +35,8 @@ class BrandsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

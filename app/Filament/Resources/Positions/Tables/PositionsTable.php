@@ -15,6 +15,10 @@ class PositionsTable
         return $table
             ->emptyStateHeading('Belum ada data jabatan pekerjaan')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+
                 TextColumn::make('name')
                     ->label('Jabatan')
                     ->searchable(),
@@ -31,7 +35,8 @@ class PositionsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

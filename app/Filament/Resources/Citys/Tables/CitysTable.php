@@ -14,6 +14,10 @@ class CitysTable
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+                    
                 TextColumn::make('city_name')
                     ->label('Kota / Kabupaten')
                     ->searchable()
@@ -30,7 +34,8 @@ class CitysTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

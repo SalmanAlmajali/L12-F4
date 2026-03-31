@@ -16,6 +16,10 @@ class UsersTable
         return $table
             ->emptyStateHeading('Belum ada data pengguna')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+                    
                 TextColumn::make('name')
                     ->label('Nama')
                     ->searchable(),

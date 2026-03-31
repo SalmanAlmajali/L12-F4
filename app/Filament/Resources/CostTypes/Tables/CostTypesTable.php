@@ -16,6 +16,14 @@ class CostTypesTable
             ->emptyStateHeading('Belum ada data jenis biaya')
             ->emptyStateDescription('Silakan tambahkan jenis biaya terlebih dahulu')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+
                 TextColumn::make('name')
                     ->label('Biaya')
                     ->searchable(),
@@ -32,7 +40,8 @@ class CostTypesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->modalWidth('md'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

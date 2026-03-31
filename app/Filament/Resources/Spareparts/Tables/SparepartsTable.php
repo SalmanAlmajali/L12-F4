@@ -15,13 +15,17 @@ class SparepartsTable
         return $table
             ->emptyStateHeading('Belum ada data suku cadang')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex(),
+                    
                 TextColumn::make('name')
                     ->label('Suku Cadang')
                     ->searchable(),
-               TextColumn::make('price')
-    ->label('Harga')
-    ->money('IDR', locale: 'id')
-    ->sortable(),
+                TextColumn::make('price')
+                    ->label('Harga')
+                    ->money('IDR', locale: 'id')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
